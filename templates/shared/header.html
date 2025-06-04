@@ -1,0 +1,462 @@
+<header class="header header-8">
+  <div class="header-top">
+    <div class="container">
+      <div class="header-left">
+        <div class="header-dropdown">
+          <a href="#">تومان</a>
+          <div class="header-menu">
+            <ul>
+              <li><a href="#">دلار</a></li>
+              <li><a href="#">تومان</a></li>
+            </ul>
+          </div>
+          <!-- End .header-menu -->
+        </div>
+        <!-- End .header-dropdown -->
+
+        <div class="header-dropdown">
+          <a href="#">فارسی</a>
+          <div class="header-menu">
+            <ul>
+              <li><a href="#">انگلیسی</a></li>
+              <li><a href="#">فرانسوی</a></li>
+              <li><a href="#">ترکی استانبولی</a></li>
+            </ul>
+          </div>
+          <!-- End .header-menu -->
+        </div>
+        <!-- End .header-dropdown -->
+      </div>
+      <!-- End .header-left -->
+
+      <div class="header-right">
+        <ul class="top-menu">
+          <li>
+            <a href="#">لینک ها</a>
+            <ul>
+              <li>
+                <a href="tel:#"
+                  ><i class="icon-phone"></i>تلفن تماس : 02155667788</a
+                >
+              </li>
+              {% if user.is_authenticated %}
+              <li>
+                <a href="{% url 'profile' %}"
+                  ><i class="icon-user"></i>پنل کاربری</a
+                >
+              </li>
+              <li>
+                <a href="#"
+                  ><i class="icon-heart-o"></i>لیست علاقه مندی من
+                  <span>(3)</span></a
+                >
+              </li>
+              <li><a href="{% url 'Contact-us' %}">تماس با ما</a></li>
+              <li>
+                <a href="{% url 'logout' %}"><i class="icon-user"></i>خروج</a>
+              </li>
+              {% else %}
+              <li><a href="{% url 'AboutUs' %}">درباره ما</a></li>
+              <li><a href="{% url 'Contact-us' %}">تماس با ما</a></li>
+              <li>
+                <a href="#signin-modal" data-toggle="modal"
+                  ><i class="icon-user"></i>ورود / ثبت نام</a
+                >
+              </li>
+              {% endif %}
+            </ul>
+          </li>
+        </ul>
+        <!-- End .top-menu -->
+      </div>
+      <!-- End .header-right -->
+    </div>
+    <!-- End .container -->
+  </div>
+  <!-- End .header-top -->
+  <div
+    class="modal fade"
+    id="signin-modal"
+    tabindex="-1"
+    role="dialog"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-body">
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true"><i class="icon-close"></i></span>
+          </button>
+
+          <div class="form-box">
+            {% if messages %}
+            <div class="messages">
+              {% for message in messages %}
+              <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+              {% endfor %}
+            </div>
+            {% endif %}
+            <div class="form-tab">
+              <ul class="nav nav-pills nav-fill nav-border-anim" role="tablist">
+                <li class="nav-item">
+                  <a
+                    class="nav-link active"
+                    id="signin-tab"
+                    data-toggle="tab"
+                    href="#signin"
+                    role="tab"
+                    aria-controls="signin"
+                    aria-selected="true"
+                    >ورود</a
+                  >
+                </li>
+                <li class="nav-item">
+                  <a
+                    class="nav-link"
+                    id="register-tab"
+                    data-toggle="tab"
+                    href="#register"
+                    role="tab"
+                    aria-controls="register"
+                    aria-selected="false"
+                    >ثبت نام</a
+                  >
+                </li>
+              </ul>
+              <div class="tab-content" id="tab-content-5">
+                <div
+                  class="tab-pane fade show active"
+                  id="signin"
+                  role="tabpanel"
+                  aria-labelledby="signin-tab"
+                >
+                  <form action="{% url 'Login-Register' %}" method="post">
+                    {% csrf_token %}
+                    <div class="form-group">
+                      <label for="singin-email"
+                        >نام کاربری یا آدرس ایمیل *</label
+                      >
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="singin-email"
+                        name="{{ login_form.Email.name }}"
+                        required
+                      />
+                    </div>
+                    <!-- End .form-group -->
+
+                    <div class="form-group">
+                      <label for="singin-password">رمز عبور *</label>
+                      <input
+                        type="password"
+                        class="form-control"
+                        id="singin-password"
+                        name="{{ login_form.Password.name }}"
+                        required
+                      />
+                    </div>
+                    <!-- End .form-group -->
+
+                    <div class="form-footer">
+                      <button type="submit" class="btn btn-outline-primary-2">
+                        <span>ورود</span>
+                        <i class="icon-long-arrow-left"></i>
+                      </button>
+
+                      <div class="custom-control custom-checkbox">
+                        <input
+                          type="checkbox"
+                          class="custom-control-input"
+                          id="signin-remember"
+                        />
+                        <label
+                          class="custom-control-label"
+                          for="signin-remember"
+                          >مرا به خاطر بسپار</label
+                        >
+                      </div>
+                      <!-- End .custom-checkbox -->
+
+                      <a href="{% url 'password_reset' %}" class="forgot-link"
+                        >فراموشی رمز عبور؟</a
+                      >
+                    </div>
+                    <!-- End .form-footer -->
+                  </form>
+                  <div class="form-choice">
+                    <p class="text-center">یا ورود با</p>
+                    <div class="row">
+                      <div class="col-sm-6">
+                        <a href="#" class="btn btn-login btn-g">
+                          <i class="icon-google"></i>
+                          حساب گوگل
+                        </a>
+                      </div>
+                      <!-- End .col-6 -->
+                      <div class="col-sm-6">
+                        <a href="#" class="btn btn-login btn-f">
+                          <i class="icon-facebook-f"></i>
+                          حساب فیسبوک
+                        </a>
+                      </div>
+                      <!-- End .col-6 -->
+                    </div>
+                    <!-- End .row -->
+                  </div>
+                  <!-- End .form-choice -->
+                </div>
+                <!-- .End .tab-pane -->
+                <div
+                  class="tab-pane fade"
+                  id="register"
+                  role="tabpanel"
+                  aria-labelledby="register-tab"
+                >
+                  <form action="{% url 'register' %}" method="post">
+                    {% csrf_token %}
+                    <div class="form-group">
+                      <label for="register-email">آدرس ایمیل شما *</label>
+                      <input
+                        type="email"
+                        class="form-control"
+                        id="register-email"
+                        name="{{ register_form.Email.name }}"
+                        required
+                      />
+                    </div>
+                    <!-- End .form-group -->
+
+                    <div class="form-group">
+                      <label for="register-password">رمز عبور *</label>
+                      <input
+                        type="password"
+                        class="form-control"
+                        id="register-password"
+                        name="{{ register_form.Password.name }}"
+                        required
+                      />
+                    </div>
+                    <!-- End .form-group -->
+
+                    <div class="form-group">
+                      <label for="register-confirm-password"
+                        >تکرار رمز عبور *</label
+                      >
+                      <input
+                        type="password"
+                        class="form-control"
+                        id="register-confirm-password"
+                        name="{{ register_form.Confirm_Password.name }}"
+                        required
+                      />
+                    </div>
+                    <!-- End .form-group -->
+
+                    <div class="form-footer">
+                      <button type="submit" class="btn btn-outline-primary-2">
+                        <span>ثبت نام</span>
+                        <i class="icon-long-arrow-left"></i>
+                      </button>
+
+                      <div class="custom-control custom-checkbox">
+                        <input
+                          type="checkbox"
+                          class="custom-control-input"
+                          id="register-policy"
+                          required
+                        />
+                        <label
+                          class="custom-control-label"
+                          for="register-policy"
+                          >با <a href="#">قوانین و مقررات </a>موافقم *</label
+                        >
+                      </div>
+                      <!-- End .custom-checkbox -->
+                    </div>
+                    <!-- End .form-footer -->
+                  </form>
+                  <div class="form-choice">
+                    <p class="text-center">یا عضویت با</p>
+                    <div class="row">
+                      <div class="col-sm-6">
+                        <a href="#" class="btn btn-login btn-g">
+                          <i class="icon-google"></i>
+                          حساب گوگل
+                        </a>
+                      </div>
+                      <!-- End .col-6 -->
+                      <div class="col-sm-6">
+                        <a href="#" class="btn btn-login btn-f">
+                          <i class="icon-facebook-f"></i>
+                          حساب فیسبوک
+                        </a>
+                      </div>
+                      <!-- End .col-6 -->
+                    </div>
+                    <!-- End .row -->
+                  </div>
+                  <!-- End .form-choice -->
+                </div>
+                <!-- .End .tab-pane -->
+              </div>
+              <!-- End .tab-content -->
+            </div>
+            <!-- End .form-tab -->
+          </div>
+          <!-- End .form-box -->
+        </div>
+        <!-- End .modal-body -->
+      </div>
+      <!-- End .modal-content -->
+    </div>
+    <!-- End .modal-dialog -->
+  </div>
+  <!-- End .modal -->
+
+  <div class="header-middle sticky-header">
+    <div class="container">
+      <div class="header-left">
+        <button class="mobile-menu-toggler">
+          <span class="sr-only">فهرست</span>
+          <i class="icon-bars"></i>
+        </button>
+
+        <a href="index-1.html" class="logo">
+          <img
+            src="/static/assets/images/demos/demo-10/logo.png"
+            alt="Molla Logo"
+            width="105"
+            height="25"
+          />
+        </a>
+      </div>
+      <!-- End .header-left -->
+
+      <div class="header-right">
+        <!-- End .main-nav -->
+
+        <div class="header-search">
+          <a href="#" class="search-toggle" role="button"
+            ><i class="icon-search"></i
+          ></a>
+          <form action="#" method="get">
+            <div class="header-search-wrapper">
+              <label for="q" class="sr-only">جستجو</label>
+              <input
+                type="search"
+                class="form-control"
+                name="q"
+                id="q"
+                placeholder="جستجوی محصول ..."
+                required
+              />
+            </div>
+            <!-- End .header-search-wrapper -->
+          </form>
+        </div>
+        <!-- End .header-search -->
+
+        <div class="dropdown cart-dropdown">
+          <a
+            href="#"
+            class="dropdown-toggle"
+            role="button"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+            data-display="static"
+          >
+            <i class="icon-shopping-cart"></i>
+            <span class="cart-count">2</span>
+          </a>
+
+          <div class="dropdown-menu dropdown-menu-right">
+            <div class="dropdown-cart-products">
+              <div class="product">
+                <div class="product-cart-details">
+                  <h4 class="product-title">
+                    <a href="product.html">کتونی ورزشی مخصوص دویدن رنگ بژ</a>
+                  </h4>
+
+                  <span class="cart-product-info">
+                    <span class="cart-product-qty">1 x </span>
+                    84,000 تومان
+                  </span>
+                </div>
+                <!-- End .product-cart-details -->
+
+                <figure class="product-image-container">
+                  <a href="product.html" class="product-image">
+                    <img
+                      src="/static/assets/images/products/cart/product-1.jpg"
+                      alt="product"
+                    />
+                  </a>
+                </figure>
+                <a href="#" class="btn-remove" title="حذف محصول"
+                  ><i class="icon-close"></i
+                ></a>
+              </div>
+              <!-- End .product -->
+
+              <div class="product">
+                <div class="product-cart-details">
+                  <h4 class="product-title">
+                    <a href="product.html">لباس زنانه آبی</a>
+                  </h4>
+
+                  <span class="cart-product-info">
+                    <span class="cart-product-qty">1 x </span>
+                    76,000 تومان
+                  </span>
+                </div>
+                <!-- End .product-cart-details -->
+
+                <figure class="product-image-container">
+                  <a href="product.html" class="product-image">
+                    <img
+                      src="/static/assets/images/products/cart/product-2.jpg"
+                      alt="product"
+                    />
+                  </a>
+                </figure>
+                <a href="#" class="btn-remove" title="حذف محصول"
+                  ><i class="icon-close"></i
+                ></a>
+              </div>
+              <!-- End .product -->
+            </div>
+            <!-- End .cart-product -->
+
+            <div class="dropdown-cart-total">
+              <span>مجموع</span>
+
+              <span class="cart-total-price">160,000 تومان</span>
+            </div>
+            <!-- End .dropdown-cart-total -->
+
+            <div class="dropdown-cart-action">
+              <a href="cart.html" class="btn btn-primary">مشاهده سبد خرید</a>
+              <a href="checkout.html" class="btn btn-outline-primary-2"
+                ><span>پرداخت</span><i class="icon-long-arrow-left"></i
+              ></a>
+            </div>
+            <!-- End .dropdown-cart-total -->
+          </div>
+          <!-- End .dropdown-menu -->
+        </div>
+        <!-- End .cart-dropdown -->
+      </div>
+      <!-- End .header-right -->
+    </div>
+    <!-- End .container -->
+  </div>
+  <!-- End .header-middle -->
+</header>
+<!-- End .header -->

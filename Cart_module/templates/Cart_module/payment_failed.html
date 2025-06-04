@@ -1,0 +1,46 @@
+{% extends 'shared/layout.html' %}
+{% load static %}
+
+{% block content %}
+<div class="page-header text-center" style="background-image: url('{% static "assets/images/page-header-bg.jpg" %}')">
+    <div class="container">
+        <h1 class="page-title">خطا در پرداخت<span>فروشگاه</span></h1>
+    </div>
+</div>
+
+<div class="page-content">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8 text-center">
+                <div class="icon-box">
+                    <span class="icon-box-icon">
+                        <i class="icon-close" style="color: #dc3545; font-size: 48px;"></i>
+                    </span>
+                    <div class="icon-box-content">
+                        <h3 class="icon-box-title">پرداخت ناموفق</h3>
+                        <p>متأسفانه مشکلی در فرآیند پرداخت رخ داده است.</p>
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div class="alert alert-danger">
+                                    {{ message }}
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="buttons-container mt-4">
+                    <a href="{% url 'cart:checkout' %}" class="btn btn-outline-primary-2">
+                        <span>تلاش مجدد</span>
+                        <i class="icon-refresh"></i>
+                    </a>
+                    <a href="{% url 'cart:cart-detail' %}" class="btn btn-outline-primary-2">
+                        <span>بازگشت به سبد خرید</span>
+                        <i class="icon-shopping-cart"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

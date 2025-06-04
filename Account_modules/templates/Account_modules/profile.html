@@ -1,0 +1,126 @@
+{% extends 'shared/layout.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+<style>
+    .profile-container {
+        background-color: #f8f9fa;
+        border-radius: 10px;
+        padding: 30px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    .profile-image {
+        width: 150px;
+        height: 150px;
+        object-fit: cover;
+        border-radius: 50%;
+        margin-bottom: 20px;
+    }
+    .form-group {
+        margin-bottom: 20px;
+    }
+    .btn-primary {
+        background-color: #007bff;
+        border: none;
+    }
+    .btn-primary:hover {
+        background-color: #0056b3;
+    }
+    .tab-content {
+        padding-top: 20px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="profile-container">
+        <h2 class="mb-4">پروفایل کاربری</h2>
+        <ul class="nav nav-tabs" id="profileTabs" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="edit-tab" data-toggle="tab" href="#edit" role="tab">ویرایش پروفایل</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="info-tab" data-toggle="tab" href="#info" role="tab">اطلاعات کاربر</a>
+            </li>
+        </ul>
+        <div class="tab-content" id="profileTabsContent">
+            <div class="tab-pane fade show active" id="edit" role="tabpanel">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-4 text-center">
+                            {% if user.profile_image %}
+                                <img src="{{ user.profile_image.url }}" alt="Profile Image" class="profile-image">
+                            {% else %}
+                                <i class="fas fa-user-circle fa-7x mb-3"></i>
+                            {% endif %}
+                            <div class="form-group">
+                                <label for="{{ form.profile_image.id_for_label }}">تغییر عکس پروفایل:</label>
+                                {{ form.profile_image }}
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                <label for="{{ form.first_name.id_for_label }}">نام:</label>
+                                {{ form.first_name }}
+                            </div>
+                            <div class="form-group">
+                                <label for="{{ form.last_name.id_for_label }}">نام خانوادگی:</label>
+                                {{ form.last_name }}
+                            </div>
+                            <div class="form-group">
+                                <label for="{{ form.username.id_for_label }}">نام کاربری:</label>
+                                {{ form.username }}
+                                <small class="form-text text-muted">{{ form.username.help_text }}</small>
+                            </div>
+                            <div class="form-group">
+                                <label for="{{ form.email.id_for_label }}">ایمیل:</label>
+                                {{ form.email }}
+                            </div>
+                            <div class="form-group">
+                                <label for="{{ form.mobile.id_for_label }}">شماره موبایل:</label>
+                                {{ form.mobile }}
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary mt-3">ذخیره تغییرات</button>
+                </form>
+            </div>
+        <div class="tab-pane fade" id="info" role="tabpanel">
+            <h4>اطلاعات کاربر</h4>
+            <p><strong>نام کاربری:</strong> {{ user.username }}</p>
+            <p><strong>ایمیل:</strong> {{ user.email }}</p>
+            <p><strong>تاریخ عضویت:</strong> {{ user.get_jalali_date_joined }}</p>
+        </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    $(document).ready(function() {
+        // Preview image before upload
+        $("#{{ form.profile_image.id_for_label }}").change(function() {
+            if (this.files && this.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    $('.profile-image').attr('src', e.target.result);
+                }
+                reader.readAsDataURL(this.files[0]);
+            }
+        });
+
+        // Smooth scrolling for tabs
+        $('.nav-tabs a').on('click', function(e) {
+            e.preventDefault();
+            $(this).tab('show');
+        });
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,94 @@
+{% extends 'shared/layout.html' %}
+{% load static %}
+{% load thumbnail %}
+
+{% block content %}
+
+    <div class="page-header text-center" style="background-image: url('{% static 'images/page-header-bg.jpg' %}')">
+        <div class="container">
+            <h1 class="page-title">اخبار و مقالات<span>مقالات</span></h1>
+        </div>
+    </div>
+
+    <nav aria-label="breadcrumb" class="breadcrumb-nav mb-2">
+        <div class="container">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'home' %}">خانه</a></li>
+                <li class="breadcrumb-item active" aria-current="page">اخبار و مقالات</li>
+            </ol>
+        </div>
+    </nav>
+
+    <div class="page-content">
+        <div class="container">
+            <nav class="blog-nav">
+                <ul class="menu-cat entry-filter justify-content-center">
+                    <li class="{% if not request.GET.category %}active{% endif %}">
+                        <a href="{% url 'article:article-list' %}">همه اخبار<span>{{ articles.count }}</span></a>
+                    </li>
+                    {% for category in categories %}
+                        <li class="{% if request.GET.category == category.url_title %}active{% endif %}">
+                            <a href="?category={{ category.url_title }}">{{ category.title }}<span>{{ category.articles_count }}</span></a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </nav>
+
+            <div class="entry-container">
+                {% for article in articles %}
+                    <div class="entry-item {% for cat in article.category.all %}{{ cat.url_title }} {% endfor %}col-sm-6 col-lg-4">
+                        <article class="entry entry-mask">
+                            <figure class="entry-media">
+                                <a href="{{ article.get_absolute_url }}">
+                                    {% thumbnail article.image "277x180" crop="center" as im %}
+                                        <img src="{{ im.url }}" alt="{{ article.title }}">
+                                    {% endthumbnail %}
+                                </a>
+                            </figure>
+                            <div class="entry-body">
+                                <div class="entry-meta">
+                                    <a href="#">{{ article.get_jalali_date }}</a>
+                                    <span class="meta-separator">|</span>
+                                    <a href="#">{{ article.comment_count }} دیدگاه</a>
+                                </div>
+                                <h2 class="entry-title">
+                                    <a href="{{ article.get_absolute_url }}">{{ article.title }}</a>
+                                </h2>
+                                <div class="entry-cats">
+                                    {% for cat in article.category.all %}
+                                        <a href="?category={{ cat.url_title }}">{{ cat.title }}</a>
+                                        {% if not forloop.last %}،{% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                {% endfor %}
+            </div>
+
+            {% if is_paginated %}
+                <nav aria-label="Page navigation">
+                    <ul class="pagination justify-content-center">
+                        {% if page_obj.has_previous %}
+                            <li class="page-item">
+                                <a class="page-link" href="?{{ category_param }}page={{ page_obj.previous_page_number }}">قبلی</a>
+                            </li>
+                        {% endif %}
+
+                        {% for num in page_obj.paginator.page_range %}
+                            <li class="page-item {% if page_obj.number == num %}active{% endif %}">
+                                <a class="page-link" href="?{{ category_param }}page={{ num }}">{{ num }}</a>
+                            </li>
+                        {% endfor %}
+
+                        {% if page_obj.has_next %}
+                            <li class="page-item">
+                                <a class="page-link" href="?{{ category_param }}page={{ page_obj.next_page_number }}">بعدی</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

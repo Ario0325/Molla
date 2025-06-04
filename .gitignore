@@ -1,0 +1,42 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Django stuff:
+*.log
+*.pot
+*.pyc
+*.sqlite3
+*.db
+db.sqlite3
+
+# If your static files are built to a directory called 'staticfiles'
+# (common with django.contrib.staticfiles)
+staticfiles/
+media/
+
+# Normally, collectstatic will collect static files to STATIC_ROOT.
+# If you store that in your repo (not recommended), comment out this line:
+# static/
+
+# Env folders
+env/
+venv/
+.venv/
+
+# VSCode settings
+.vscode/
+
+# PyCharm
+.idea/
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+desktop.ini
+
+# Environment variables file
+.env

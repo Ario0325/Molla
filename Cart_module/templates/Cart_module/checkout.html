@@ -1,0 +1,290 @@
+{% extends 'shared/layout.html' %}
+{% load static %}
+{% load product_extras %}
+{% block content %}
+<div class="page-header text-center" style="background-image: url('{% static "assets/images/page-header-bg.jpg" %}')">
+    <div class="container">
+        <h1 class="page-title">صفحه پرداخت<span>فروشگاه</span></h1>
+    </div>
+</div>
+
+<nav aria-label="breadcrumb" class="breadcrumb-nav">
+    <div class="container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'home' %}">خانه</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'products:product-list' %}">فروشگاه</a></li>
+            <li class="breadcrumb-item active">صفحه پرداخت</li>
+        </ol>
+    </div>
+</nav>
+
+<div class="page-content">
+    <div class="checkout">
+        <div class="container">
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            <form method="post" action="{% url 'cart:checkout' %}" id="checkout-form">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-lg-9">
+                        <h2 class="checkout-title">اطلاعات تحویل سفارش</h2>
+
+                        <div class="row">
+                            <div class="col-sm-6">
+                                {{ form.first_name.label_tag }}
+                                {{ form.first_name }}
+                                {% if form.first_name.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {{ form.first_name.errors }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="col-sm-6">
+                                {{ form.last_name.label_tag }}
+                                {{ form.last_name }}
+                                {% if form.last_name.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {{ form.last_name.errors }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-12">
+                                {{ form.address.label_tag }}
+                                {{ form.address }}
+                                {% if form.address.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {{ form.address.errors }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-6">
+                                {{ form.postal_code.label_tag }}
+                                {{ form.postal_code }}
+                                {% if form.postal_code.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {{ form.postal_code.errors }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="col-sm-6">
+                                {{ form.phone.label_tag }}
+                                {{ form.phone }}
+                                {% if form.phone.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {{ form.phone.errors }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        {{ form.description.label_tag }}
+                        {{ form.description }}
+                        {% if form.description.errors %}
+                            <div class="invalid-feedback d-block">
+                                {{ form.description.errors }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <aside class="col-lg-3">
+                        <div class="summary">
+                            <h3 class="summary-title">خلاصه سفارش</h3>
+
+                            <table class="table table-summary">
+                                <thead>
+                                    <tr>
+                                        <th>محصول</th>
+                                        <th class="text-left">قیمت</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    {% for item in cart.items.all %}
+                                    <tr>
+                                        <td>
+                                            <a href="{% url 'products:product-detail' item.product.slug %}">
+                                                {{ item.product.title }}
+                                                {% if item.size or item.color %}
+                                                    <small>
+                                                        {% if item.size %}(سایز: {{ item.size }}){% endif %}
+                                                        {% if item.color %}(رنگ: {{ item.color }}){% endif %}
+                                                    </small>
+                                                {% endif %}
+                                                <span class="product-qty">× {{ item.quantity }}</span>
+                                            </a>
+                                        </td>
+                                        <td class="text-left">{{ item.get_total_price|price_format }}</td>
+                                    </tr>
+                                    {% endfor %}
+
+                                    <tr class="summary-subtotal">
+                                        <td>جمع سبد خرید:</td>
+                                        <td class="text-left">{{ cart.get_total_price|price_format }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>هزینه ارسال:</td>
+                                        <td class="text-left">رایگان</td>
+                                    </tr>
+                                    <tr class="summary-total">
+                                        <td>مبلغ قابل پرداخت:</td>
+                                        <td class="text-left">{{ cart.get_total_price|price_format }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <button type="submit" class="btn btn-outline-primary-2 btn-order btn-block">
+                                <span>پرداخت</span>
+                            </button>
+                        </div>
+                    </aside>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block extra_css %}
+<style>
+    .test-payment-info {
+        background-color: #f8f9fa;
+        border-radius: 5px;
+        padding: 15px;
+        margin-top: 15px;
+    }
+
+    .test-payment-info p {
+        font-size: 14px;
+    }
+    .payment-gateway-logo {
+        max-width: 120px;
+        margin-top: 10px;
+    }
+
+    .invalid-feedback {
+        display: block;
+        color: #dc3545;
+        font-size: 0.875rem;
+        margin-top: 0.25rem;
+    }
+
+    .product-qty {
+        color: #777;
+        margin-left: 5px;
+    }
+
+    .summary .table-summary td {
+        padding: 15px 0;
+    }
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('checkout-form');
+    let isSubmitting = false;
+
+    function validateForm() {
+        const requiredFields = form.querySelectorAll('input[required]');
+        let isValid = true;
+
+        requiredFields.forEach(field => {
+            if (!field.value.trim()) {
+                isValid = false;
+                field.classList.add('is-invalid');
+            } else {
+                field.classList.remove('is-invalid');
+            }
+        });
+
+        return isValid;
+    }
+
+    function showLoadingDialog() {
+        return Swal.fire({
+            title: 'انتقال به درگاه پرداخت',
+            text: 'لطفا منتظر بمانید...',
+            icon: 'info',
+            showConfirmButton: false,
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+    }
+
+    function showValidationError() {
+        Swal.fire({
+            title: 'خطا!',
+            text: 'لطفا تمام فیلدهای ضروری را تکمیل کنید.',
+            icon: 'error',
+            confirmButtonText: 'باشه'
+        });
+    }
+
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        if (isSubmitting) return;
+
+        if (!validateForm()) {
+            showValidationError();
+            return;
+        }
+
+        isSubmitting = true;
+        showLoadingDialog();
+        form.submit();
+    });
+});
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('checkout-form');
+    let isSubmitting = false;
+
+    function validateForm() {
+        const requiredFields = form.querySelectorAll('input[required]');
+        let isValid = true;
+
+        requiredFields.forEach(field => {
+            if (!field.value.trim()) {
+                isValid = false;
+                field.classList.add('is-invalid');
+            } else {
+                field.classList.remove('is-invalid');
+            }
+        });
+
+        return isValid;
+    }
+
+    form.addEventListener('submit', function(e) {
+        if (isSubmitting) return;
+
+        if (!validateForm()) {
+            e.preventDefault();
+            Swal.fire({
+                title: 'خطا!',
+                text: 'لطفا تمام فیلدهای ضروری را تکمیل کنید.',
+                icon: 'error',
+                confirmButtonText: 'باشه'
+            });
+            return;
+        }
+
+        isSubmitting = true;
+    });
+});
+</script>
+{% endblock %}

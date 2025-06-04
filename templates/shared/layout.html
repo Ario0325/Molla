@@ -1,0 +1,30 @@
+{% load render_partial %}
+
+<!DOCTYPE html>
+<html lang="en" dir="rtl">
+
+<head>
+    {% include "shared/style.html" %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+</head>
+
+<body>
+
+{% include "shared/header.html" %}
+<!-- End .header -->
+<main class="main">
+
+    {% block content %}
+
+    {% endblock %}
+
+</main><!-- End .main -->
+
+{% include 'shared/footer.html' %}
+<!-- End .footer -->
+
+
+{% include "shared/script.html" %}
+
+</body>
+</html>

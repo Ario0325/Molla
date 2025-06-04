@@ -1,0 +1,101 @@
+{% extends 'shared/layout.html' %}
+{% load static %}
+
+{% block content %}
+<div class="page-header text-center" style="background-image: url('{% static "assets/images/page-header-bg.jpg" %}')">
+    <div class="container">
+        <h1 class="page-title">درگاه پرداخت تستی<span>فروشگاه</span></h1>
+    </div>
+</div>
+
+<div class="page-content">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="card-title text-center mb-4">اطلاعات پرداخت</h3>
+                        
+                        <div class="payment-details mb-4">
+                            <p><strong>شماره سفارش:</strong> {{ order_id }}</p>
+                            <p><strong>مبلغ قابل پرداخت:</strong> {{ amount|floatformat:0 }} تومان</p>
+                            <p><strong>شماره تراکنش:</strong> {{ transaction_id }}</p>
+                        </div>
+
+                        <form id="payment-form" method="POST" action="{% url 'cart:payment-verify' %}">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label>شماره کارت</label>
+                                <input type="text" class="form-control" value="6037-9999-9999-9999" readonly>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>رمز دوم</label>
+                                <input type="password" class="form-control" value="12345" readonly>
+                            </div>
+
+                            <div class="form-group">
+                                <label>CVV2</label>
+                                <input type="text" class="form-control" value="123" readonly>
+                            </div>
+
+                            <div class="form-group">
+                                <label>تاریخ انقضا</label>
+                                <input type="text" class="form-control" value="12/99" readonly>
+                            </div>
+
+                            <input type="hidden" name="order_id" value="{{ order_id }}">
+                            <input type="hidden" name="amount" value="{{ amount }}">
+                            <input type="hidden" name="transaction_id" value="{{ transaction_id }}">
+
+                            <div class="text-center mt-4">
+                                <button type="submit" class="btn btn-primary btn-block">پرداخت</button>
+                                <a href="{% url 'cart:payment-failed' %}" class="btn btn-outline-danger btn-block mt-2">انصراف</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .payment-details {
+        background-color: #f8f9fa;
+        padding: 15px;
+        border-radius: 5px;
+    }
+    .payment-details p {
+        margin-bottom: 8px;
+    }
+    .payment-details p:last-child {
+        margin-bottom: 0;
+    }
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.getElementById('payment-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    Swal.fire({
+        title: 'در حال پردازش',
+        text: 'لطفا صبر کنید...',
+        icon: 'info',
+        showConfirmButton: false,
+        allowOutsideClick: false,
+        didOpen: () => {
+            Swal.showLoading();
+        }
+    });
+
+    setTimeout(() => {
+        this.submit();
+    }, 2000);
+});
+</script>
+{% endblock %}
