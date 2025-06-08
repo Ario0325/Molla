@@ -47,7 +47,8 @@ class Product(models.Model):
     title = models.CharField(max_length=300, verbose_name='عنوان')
     image = models.ImageField(upload_to='images/products', verbose_name='تصویر اصلی')
     stock = models.PositiveIntegerField(default=0, verbose_name='موجودی')
-    price = models.IntegerField(verbose_name='قیمت')
+    price = models.IntegerField(verbose_name='قیمت اصلی')
+    discounted_price = models.IntegerField(verbose_name='قیمت با تخفیف', null=True, blank=True)
     old_price = models.IntegerField(verbose_name='قیمت قبلی', null=True, blank=True)
     short_description = models.CharField(max_length=360, db_index=True, null=True, verbose_name='توضیحات کوتاه')
     description = models.TextField(verbose_name='توضیحات اصلی', db_index=True)
@@ -62,19 +63,36 @@ class Product(models.Model):
     colors = models.ManyToManyField(ProductColor, verbose_name='رنگ ها', blank=True)
     is_special = models.BooleanField(default=False, verbose_name='محصول ویژه')
     is_new = models.BooleanField(default=False, verbose_name='محصول جدید')
-    discount_percent = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(100)], null=True,
-                                           blank=True, verbose_name='درصد تخفیف')
+    discount_percent = models.IntegerField(
+        validators=[MinValueValidator(0), MaxValueValidator(100)],
+        null=True, blank=True,
+        verbose_name='درصد تخفیف'
+    )
 
     class Meta:
         verbose_name = 'محصول'
         verbose_name_plural = 'محصولات'
 
-    stock = models.PositiveIntegerField(default=0, verbose_name='موجودی')
-
     def save(self, *args, **kwargs):
         if self.stock < 0:
             self.stock = 0
+
+        # Calculate discounted price if discount_percent is provided
+        if self.discount_percent and self.discount_percent > 0:
+            discount_amount = (self.price * self.discount_percent) / 100
+            self.discounted_price = int(self.price - discount_amount)
+        else:
+            self.discounted_price = None
+
         super().save(*args, **kwargs)
+
+    def get_display_price(self):
+        """Returns the price to display (discounted if available, otherwise original)"""
+        return self.discounted_price if self.discounted_price else self.price
+
+    def has_discount(self):
+        """Returns True if product has a discount"""
+        return self.discount_percent and self.discount_percent > 0
 
     def __str__(self):
         return self.title

@@ -42,8 +42,6 @@ INSTALLED_APPS = [
     'Category_Module.apps.CategoryModuleConfig',
     'ContactUs_module.apps.ContactusModuleConfig',
     'django_render_partial',
-    'ArticleModule',
-    'Category_Article_Module',
     'polls.apps.PollsConfig',
     'sorl.thumbnail',
     'Product_module.apps.ProductModuleConfig',
@@ -79,7 +77,6 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'Account_modules.context_processors.auth_forms',
-                'ArticleModule.context_processors.article_categories',
                 'Cart_module.context_processors.cart_context',
 
             ],

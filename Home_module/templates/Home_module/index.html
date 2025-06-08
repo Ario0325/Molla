@@ -1,8 +1,7 @@
 {% extends 'shared/layout.html' %}
 {% load thumbnail %}
 {% load product_extras %}
-
-
+{% load static %}
 {% block content %}
     <div class="container">
         <div class="intro-slider-container slider-container-ratio mb-2">
@@ -421,7 +420,7 @@
     </div>    </div><!-- End .tab-content -->
 
     <div class="more-container text-center mt-5">
-        <a href="category.html" class="btn btn-outline-lightgray btn-more btn-round"><span>مشاهده محصولات
+        <a href="{% url 'products:product-list' %}" class="btn btn-outline-lightgray btn-more btn-round"><span>مشاهده محصولات
                             بیشتر</span><i class="icon-long-arrow-left"></i></a>
     </div><!-- End .more-container -->
     </div><!-- End .container -->
@@ -447,139 +446,7 @@
         </div><!-- End .cta-horizontal -->
     </div><!-- End .container -->
 
-    <div class="blog-posts">
-        <div class="container">
-            <h2 class="title-lg text-center mb-4">اخبار فروشگاه ما</h2><!-- End .title-lg text-center -->
-
-            <div class="owl-carousel owl-simple mb-4" data-toggle="owl" data-owl-options='{
-                            "nav": false,
-                            "dots": true,
-                            "items": 3,
-                            "margin": 20,
-                            "loop": false,
-                            "rtl": true,
-                            "responsive": {
-                                "0": {
-                                    "items":1
-                                },
-                                "520": {
-                                    "items":2
-                                },
-                                "768": {
-                                    "items":3
-                                },
-                                "992": {
-                                    "items":4
-                                }
-                            }
-                        }'>
-                <article class="entry">
-                    <figure class="entry-media">
-                        <a href="single.html">
-                            <img src="/static/assets/images/demos/demo-10/blog/post-1.jpg" alt="توضیحات عکس">
-                        </a>
-                    </figure><!-- End .entry-media -->
-
-                    <div class="entry-body text-center">
-                        <div class="entry-meta">
-                            <a href="#">22 اسفند 1401</a>, 0 دیدگاه
-                        </div><!-- End .entry-meta -->
-
-                        <h3 class="entry-title text-center">
-                            <a href="single.html">لورم ایپسوم متن ساختگی</a>
-                        </h3><!-- End .entry-title -->
-
-                        <div class="entry-content">
-                            <p class="text-center">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم لورم ایپسوم متن
-                                ساختگی با تولید
-                                سادگی نامفهوم لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم </p>
-                            <a href="single.html" class="read-more">مطالعه بیشتر</a>
-                        </div><!-- End .entry-content -->
-                    </div><!-- End .entry-body -->
-                </article><!-- End .entry -->
-
-                <article class="entry">
-                    <figure class="entry-media">
-                        <a href="single.html">
-                            <img src="/static/assets/images/demos/demo-10/blog/post-2.jpg" alt="توضیحات عکس">
-                        </a>
-                    </figure><!-- End .entry-media -->
-
-                    <div class="entry-body text-center">
-                        <div class="entry-meta">
-                            <a href="#">12 اسفند 1401</a>, 0 دیدگاه
-                        </div><!-- End .entry-meta -->
-
-                        <h3 class="entry-title text-center">
-                            <a href="single.html">لورم ایپسوم متن ساختگی</a>
-                        </h3><!-- End .entry-title -->
-
-                        <div class="entry-content">
-                            <p class="text-center">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم لورم ایپسوم متن
-                                ساختگی با تولید
-                                سادگی نامفهوم لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم </p>
-                            <a href="single.html" class="read-more">مطالعه بیشتر</a>
-                        </div><!-- End .entry-content -->
-                    </div><!-- End .entry-body -->
-                </article><!-- End .entry -->
-
-                <article class="entry">
-                    <figure class="entry-media">
-                        <a href="single.html">
-                            <img src="/static/assets/images/demos/demo-10/blog/post-3.jpg" alt="توضیحات عکس">
-                        </a>
-                    </figure><!-- End .entry-media -->
-
-                    <div class="entry-body text-center">
-                        <div class="entry-meta">
-                            <a href="#">10 اسفند 1401</a>, 2 دیدگاه
-                        </div><!-- End .entry-meta -->
-
-                        <h3 class="entry-title text-center">
-                            <a href="single.html">لورم ایپسوم متن ساختگی</a>
-                        </h3><!-- End .entry-title -->
-
-                        <div class="entry-content">
-                            <p class="text-center">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم لورم ایپسوم متن
-                                ساختگی با تولید
-                                سادگی نامفهوم لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم </p>
-                            <a href="single.html" class="read-more">مطالعه بیشتر</a>
-                        </div><!-- End .entry-content -->
-                    </div><!-- End .entry-body -->
-                </article><!-- End .entry -->
-
-                <article class="entry">
-                    <figure class="entry-media">
-                        <a href="single.html">
-                            <img src="/static/assets/images/demos/demo-10/blog/post-4.jpg" alt="توضیحات عکس">
-                        </a>
-                    </figure><!-- End .entry-media -->
-
-                    <div class="entry-body text-center">
-                        <div class="entry-meta">
-                            <a href="#">10 اسفند 1401</a>, 2 دیدگاه
-                        </div><!-- End .entry-meta -->
-
-                        <h3 class="entry-title text-center">
-                            <a href="single.html">لورم ایپسوم متن ساختگی</a>
-                        </h3><!-- End .entry-title -->
-
-                        <div class="entry-content">
-                            <p class="text-center">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم لورم ایپسوم متن
-                                ساختگی با تولید
-                                سادگی نامفهوم لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم </p>
-                            <a href="single.html" class="read-more">مطالعه بیشتر</a>
-                        </div><!-- End .entry-content -->
-                    </div><!-- End .entry-body -->
-                </article><!-- End .entry -->
-            </div><!-- End .owl-carousel -->
-
-            <div class="more-container text-center mt-1">
-                <a href="blog.html" class="btn btn-outline-lightgray btn-more btn-round"><span>مشاهده اخبار
-                                بیشتر</span><i class="icon-long-arrow-left"></i></a>
-            </div><!-- End .more-container -->
-        </div><!-- End .container -->
-    </div><!-- End .blog-posts -->
+    <!-- جایگزین کردن بخش blog-posts -->
 
 
 

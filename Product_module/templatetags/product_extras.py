@@ -9,3 +9,10 @@ def price_format(value):
         return "{:,}".format(int(value)) + ' تومان'
     except:
         return value
+
+@register.filter(name='discount_label')
+def discount_label(discount_percent):
+    try:
+        return f"{int(discount_percent)}% تخفیف"
+    except:
+        return ""
